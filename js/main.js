@@ -4,6 +4,25 @@
   const okane = ["ichiman", "gosen", "sen", "gohyaku", "hyaku", "gojuu", "juu", "go", "ichi"];
   const TBL = document.getElementById('TBL');
 
+  /**
+   * サウンド再生関数
+   */
+  function sound1() { playSound('se_1'); }
+  function sound2() { playSound('se_2'); }
+  function sound3() { playSound('se_3'); }
+  function sound4() { playSound('se_4'); }
+
+  /**
+   * サウンドファイルの再生
+   */
+  function playSound(soundId) {
+    const audio = document.getElementById(soundId);
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(err => console.log('Audio play failed:', err));
+    }
+  }
+
   // モード切り替え機能
   const modeButtons = document.querySelectorAll('.mode-button');
   const modeContents = {
@@ -12,10 +31,35 @@
     mondai: document.getElementById('modeMondai')
   };
 
+  // トースト表示用のタイマーID
+  let toastTimer = null;
+
+  // トースト表示関数
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastContent = toast.querySelector('.toast-content');
+
+    // 既存のタイマーをクリア
+    if (toastTimer !== null) {
+      clearTimeout(toastTimer);
+    }
+
+    toastContent.textContent = message;
+    toast.classList.add('show');
+
+    // 3秒後に非表示
+    toastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+      toastTimer = null;
+    }, 3000);
+  }
+
   // モードボタンのクリックイベント
   modeButtons.forEach(button => {
     button.addEventListener('click', () => {
       const mode = button.dataset.mode;
+
+      sound1(); // モード選択時の音
 
       // すべてのボタンからactiveクラスを削除
       modeButtons.forEach(btn => btn.classList.remove('active'));
@@ -30,6 +74,23 @@
 
       // 選択されたモードのコンテンツを表示
       modeContents[mode].style.display = 'block';
+
+      // モードに応じたトースト通知を表示
+      let toastMessage = '';
+      switch (mode) {
+        case 'set':
+          toastMessage = 'すうじを　入れて、お金を　ならべて　みよう！';
+          break;
+        case 'narabeyou':
+          toastMessage = 'もんだいを　出すよ。お金を　ならべて　みよう！';
+          break;
+        case 'mondai':
+          toastMessage = 'お金の　ごうけいを　こたえよう！';
+          break;
+      }
+      if (toastMessage) {
+        showToast(toastMessage);
+      }
     });
   });
 
@@ -37,8 +98,11 @@
   set.addEventListener('click', () => {
     if (kazu.value > 99999) {
       kazu.value = "";
+      sound4();
       alert('１から99999までのすうじにしてね。');
+      return;
     }
+    sound1();
     kazu.style.color = "blue";
     OkaneSet();
     ugoki();
@@ -46,6 +110,7 @@
 
   const resetSet = document.getElementById('reset-set');
   resetSet.addEventListener('click', () => {
+    sound1();
     OkaneReset();
     kazu.value = "";
     kazu.style.color = "";
@@ -54,10 +119,14 @@
 
   const question = document.getElementById('question');
   const answerInput = document.getElementById('answerInput');
-  let correctAnswer = 0; // 正解の金額を保存
+  let correctAnswer = 0; // もんだいモードの正解の金額を保存
+  let narabeyouAnswer = 0; // ならべようモードの正解の金額を保存
+  let hasAnswered = false; // 正解してコインを獲得したかどうかのフラグ
 
   question.addEventListener('click', () => {
+    sound1();
     OkaneReset();
+    hasAnswered = false; // 新しい問題なのでフラグをリセット
     let l = [];
     for (let i = 0; i < 9; i = i + 2) {
       let Check = document.getElementById("kurai" + i);
@@ -84,7 +153,9 @@
 
   const start = document.getElementById('start');
   start.addEventListener('click', () => {
+    sound1();
     OkaneReset();
+    hasAnswered = false; // 新しい問題なのでフラグをリセット
     let h = [];
     for (let i = 0; i < 9; i = i + 2) {
       let Check = document.getElementById("kurai" + i);
@@ -94,7 +165,8 @@
         h[i] = 0;
       }
     }
-    box.innerHTML = h[0] * 10000 + h[2] * 1000 + h[4] * 100 + h[6] * 10 + h[8] * 1
+    narabeyouAnswer = h[0] * 10000 + h[2] * 1000 + h[4] * 100 + h[6] * 10 + h[8] * 1; // 正解を保存
+    box.innerHTML = narabeyouAnswer;
     kazu.value = "";
     OkaneSet();
     box.style.color = "blue";
@@ -121,24 +193,60 @@
     if (modeMondai.style.display !== 'none') {
       const userAnswer = parseInt(answerInput.value);
       if (isNaN(userAnswer)) {
+        sound4();
         alert('答えを入力してください。');
         return;
       }
 
       if (userAnswer === total) {
-        alert('せいかい！　' + total + '円です！');
-        answerInput.style.backgroundColor = "#aed581";
+        sound2();
+        if (!hasAnswered) {
+          addCoin(); // 正解時にコインを追加（初回のみ）
+          hasAnswered = true; // フラグを立てる
+          alert('せいかい！　' + total + '円です！\nコインを　1まい　かくとく！');
+        } else {
+          alert('せいかい！　' + total + '円です！');
+        }
+        answerInput.style.backgroundColor = "#64b5f6";
         answerInput.style.color = "white";
       } else {
-        alert('ざんねん！　正しい答えは　' + total + '円です。');
+        sound4();
+        alert('ざんねん！　正しい　こたえは　' + total + '円です。');
         answerInput.style.backgroundColor = "#ff6b6b";
         answerInput.style.color = "white";
       }
     } else {
-      // その他のモードの場合は合計を表示
-      kazu.value = total;
-      kazu.style.color = "red";
-      kazu.style.backgroundColor = "lightblue";
+      // その他のモード（セット、ならべよう）の場合
+      const modeNarabeyou = document.getElementById('modeNarabeyou');
+
+      // ならべようモードで問題が出されている場合は正解判定
+      if (modeNarabeyou.style.display !== 'none' && narabeyouAnswer > 0) {
+        if (total === narabeyouAnswer) {
+          sound2();
+          if (!hasAnswered) {
+            addCoin(); // 正解時にコインを追加（初回のみ）
+            hasAnswered = true; // フラグを立てる
+            alert('せいかい！　' + total + '円です！\nコインを　1まい　かくとく！');
+          } else {
+            alert('せいかい！　' + total + '円です！');
+          }
+          kazu.value = total;
+          kazu.style.color = "white";
+          kazu.style.backgroundColor = "#64b5f6";
+        } else {
+          sound4();
+          alert('ざんねん！　正しい　こたえは　' + narabeyouAnswer + '円です。');
+          kazu.value = total;
+          kazu.style.color = "white";
+          kazu.style.backgroundColor = "#ff6b6b";
+        }
+      } else {
+        // セットモードの場合は合計を表示
+        sound2();
+        kazu.value = total;
+        kazu.style.color = "red";
+        kazu.style.backgroundColor = "lightblue";
+      }
     }
   };
 
@@ -148,6 +256,8 @@
   });
 
   function OkaneWrite() {
+    const okibaBoxBills = document.getElementById('okibaBox-bills');
+    const okibaBoxCoins = document.getElementById('okibaBox-coins');
     const okibaBox = document.getElementById('okibaBox');
     var imgBox = okibaBox.getElementsByClassName('okane');
     // console.log(imgBox.length === 9);
@@ -161,7 +271,13 @@
       img.classList.add('okane');
       img.classList.add(okane[i]);
       img.classList.add('draggable-elem');
-      okibaBox.appendChild(img);
+
+      // お札（0:ichiman, 1:gosen, 2:sen）は上段、それ以外は下段
+      if (i <= 2) {
+        okibaBoxBills.appendChild(img);
+      } else {
+        okibaBoxCoins.appendChild(img);
+      }
     }
     ugoki();
   }
@@ -240,6 +356,7 @@
   let offsetX = 0;
   let offsetY = 0;
   let canDrag = false;
+  let originalParent = null; // 元の親要素を保存
 
   /**
    * イベント委譲によるドラッグ&ドロップ機能の設定（初期化時に1回だけ実行）
@@ -247,16 +364,16 @@
   function setupDragAndDrop() {
     // テーブルエリアにイベントリスナーを追加（イベント委譲）
     TBL.addEventListener('touchstart', handleStart, { passive: false });
-    TBL.addEventListener('touchmove', handleMove, { passive: false });
-    TBL.addEventListener('touchend', handleEnd, { passive: false });
     TBL.addEventListener('mousedown', handleStart, { passive: false });
 
     // 財布エリアにイベントリスナーを追加（イベント委譲）
     const okibaBox = document.getElementById('okibaBox');
     okibaBox.addEventListener('touchstart', handleStart, { passive: false });
-    okibaBox.addEventListener('touchmove', handleMove, { passive: false });
-    okibaBox.addEventListener('touchend', handleEnd, { passive: false });
     okibaBox.addEventListener('mousedown', handleStart, { passive: false });
+
+    // documentにもイベントリスナーを追加（bodyに移動した要素用）
+    document.addEventListener('touchmove', handleMove, { passive: false });
+    document.addEventListener('touchend', handleEnd, { passive: false });
   }
 
   // ugoki関数は後方互換性のため残すが、何もしない
@@ -274,9 +391,9 @@
     event.preventDefault();
     currentDragged = target;
 
-    // 財布内（#okibaBox）またはテーブルセル内のお金がドラッグ可能
+    // 財布内（#okibaBox, #okibaBox-bills, #okibaBox-coins）またはテーブルセル内のお金がドラッグ可能
     const parentElement = currentDragged.parentElement;
-    canDrag = (parentElement && parentElement.id === 'okibaBox') ||
+    canDrag = (parentElement && (parentElement.id === 'okibaBox' || parentElement.id === 'okibaBox-bills' || parentElement.id === 'okibaBox-coins')) ||
               (parentElement && parentElement.tagName === 'TD' && parentElement.classList.contains('droppable-elem'));
 
     if (!canDrag) {
@@ -285,13 +402,27 @@
     }
 
     const touch = event.touches ? event.touches[0] : event;
+
+    // 元の親要素を保存
+    originalParent = currentDragged.parentElement;
+
+    // transformの影響を受ける前に画面上の位置とサイズを取得
     const rect = currentDragged.getBoundingClientRect();
 
-    offsetX = touch.clientX - rect.left;
-    offsetY = touch.clientY - rect.top;
+    // bodyに移動（transformの影響を排除）
+    document.body.appendChild(currentDragged);
 
+    // position: fixedに変更して、元の位置・サイズを維持
     currentDragged.style.position = 'fixed';
     currentDragged.style.zIndex = '1000';
+    currentDragged.style.left = rect.left + 'px';
+    currentDragged.style.top = rect.top + 'px';
+    currentDragged.style.width = rect.width + 'px';
+    currentDragged.style.height = rect.height + 'px';
+
+    // クリック位置と要素の位置の差を保存
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
 
     if (!event.touches) {
       document.addEventListener('mousemove', handleMove);
@@ -325,17 +456,28 @@
     currentDragged.style.zIndex = '';
     currentDragged.style.left = '';
     currentDragged.style.top = '';
+    currentDragged.style.width = '';
+    currentDragged.style.height = '';
 
     let dropSuccess = false;
 
     // ドロップ先の判定
     if (elementBelow) {
       // 財布エリア（#okibaBox）への移動
-      if (elementBelow.id === 'okibaBox' || elementBelow.closest('#okibaBox')) {
-        const okibaBox = document.getElementById('okibaBox');
-        if (okibaBox) {
-          okibaBox.appendChild(currentDragged);
+      if (elementBelow.id === 'okibaBox' || elementBelow.id === 'okibaBox-bills' || elementBelow.id === 'okibaBox-coins' || elementBelow.closest('#okibaBox')) {
+        // お札かどうかを判定
+        const isBill = currentDragged.classList.contains('ichiman') ||
+                       currentDragged.classList.contains('gosen') ||
+                       currentDragged.classList.contains('sen');
+
+        const targetContainer = isBill ?
+          document.getElementById('okibaBox-bills') :
+          document.getElementById('okibaBox-coins');
+
+        if (targetContainer) {
+          targetContainer.appendChild(currentDragged);
           dropSuccess = true;
+          sound3(); // ドロップ成功時の音
         }
       }
       // テーブルのセル（お金を並べるエリア）への移動
@@ -345,15 +487,24 @@
         if (tableCell && tableCell.classList.contains('droppable-elem')) {
           tableCell.appendChild(currentDragged);
           dropSuccess = true;
+          sound3(); // ドロップ成功時の音
         }
       }
     }
 
     // ドロップに失敗した場合は財布に戻す
     if (!dropSuccess) {
-      const okibaBox = document.getElementById('okibaBox');
-      if (okibaBox) {
-        okibaBox.appendChild(currentDragged);
+      // お札かどうかを判定
+      const isBill = currentDragged.classList.contains('ichiman') ||
+                     currentDragged.classList.contains('gosen') ||
+                     currentDragged.classList.contains('sen');
+
+      const targetContainer = isBill ?
+        document.getElementById('okibaBox-bills') :
+        document.getElementById('okibaBox-coins');
+
+      if (targetContainer) {
+        targetContainer.appendChild(currentDragged);
       }
     }
 
@@ -368,7 +519,77 @@
     OkaneWrite();
   }
 
+  // ========================================
+  // コイン機能
+  // ========================================
+
+  // ページ読み込み時にコインを復元
+  function loadCoins() {
+    const savedCoins = localStorage.getItem("coinCount");
+    const coinCount = savedCoins ? parseInt(savedCoins, 10) : 0;
+    const coinPallet = document.getElementById("coin-pallet");
+
+    // 保存されているコイン数だけコイン画像を表示
+    for (let i = 0; i < coinCount; i++) {
+      const img = document.createElement("img");
+      img.src = "./img/coin.png";
+      img.alt = "コイン";
+      coinPallet.appendChild(img);
+    }
+  }
+
+  // コインを1枚追加してローカルストレージに保存
+  function addCoin() {
+    const img = document.createElement("img");
+    img.src = "./img/coin.png";
+    img.alt = "コイン";
+    document.getElementById("coin-pallet").appendChild(img);
+
+    // 現在のコイン数を取得して+1
+    const savedCoins = localStorage.getItem("coinCount");
+    const coinCount = savedCoins ? parseInt(savedCoins, 10) : 0;
+    localStorage.setItem("coinCount", coinCount + 1);
+  }
+
+  // コインをリセット（計算問題による確認付き）
+  const btnResetCoins = document.getElementById("btn-reset-coins");
+  btnResetCoins.addEventListener("click", () => {
+    sound4();
+
+    // 2桁×1桁のランダムな計算問題を生成
+    const num1 = Math.floor(Math.random() * 90) + 10; // 10-99の2桁
+    const num2 = Math.floor(Math.random() * 9) + 1;   // 1-9の1桁
+    const correctAnswer = num1 * num2;
+
+    const userAnswer = prompt(`コインをリセットするには、次の計算問題を解いてください。\n\n${num1} × ${num2} = ?`);
+
+    // キャンセルした場合
+    if (userAnswer === null) {
+      return;
+    }
+
+    // 答えが正しいかチェック
+    if (parseInt(userAnswer, 10) === correctAnswer) {
+      // ローカルストレージをクリア
+      localStorage.removeItem("coinCount");
+      // 画面上のコインを全て削除
+      const coinPallet = document.getElementById("coin-pallet");
+      coinPallet.innerHTML = "";
+      sound1();
+      alert("正解です！コインをリセットしました。");
+    } else {
+      sound4();
+      alert(`不正解です。正しい答えは ${correctAnswer} でした。\nコインはリセットされませんでした。`);
+    }
+  });
+
   // 初期化
   OkaneWrite();
   setupDragAndDrop(); // イベント委譲の設定（1回だけ）
+  loadCoins(); // ページ読み込み時にコインを復元
+
+  // ページ読み込み時にアプリの説明を表示
+  setTimeout(() => {
+    showToast('つかう　お金に　チェックを　入れて、モードを　えらぼう！');
+  }, 500);
 }

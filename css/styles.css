@@ -26,6 +26,12 @@ body {
   touch-action: manipulation;
 }
 
+/* すべてのお金の共通サイズ設定 */
+.okane {
+  height: clamp(25px, 3vw, 50px);
+  width: auto;
+}
+
 /* ========================================
    レイアウト
 ======================================== */
@@ -112,6 +118,7 @@ a:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   line-height: 1.2;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .meate {
@@ -202,10 +209,6 @@ a:hover {
   cursor: pointer;
 }
 
-.okane-checkbox-area .okane {
-  height: clamp(25px, 3.5vw, 40px);
-  width: auto;
-}
 
 /* ========================================
    モード選択エリア
@@ -288,7 +291,7 @@ a:hover {
 }
 
 .mode-mondai {
-  background-color: #aed581;
+  background-color: #64b5f6;
   color: black;
 }
 
@@ -345,7 +348,7 @@ input[type="number"] {
   padding: 0.5rem;
   font-size: clamp(22px, 3.5vw, 28px);
   text-align: center;
-  background-color: #ffeb3b;
+  background-color: white;
   color: black;
   border-radius: 8px;
   line-height: 1.2;
@@ -382,47 +385,45 @@ input[type="number"] {
 }
 
 .saifu-container {
-  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 0.5rem;
   max-width: 900px;
   margin: 0 auto;
   min-height: clamp(50px, 8vw, 70px);
 }
 
 #saifu {
-  width: clamp(84px, 14vw, 126px);
+  width: clamp(40px, 6vw, 60px);
   height: auto;
   border-radius: 8px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  position: relative;
-  z-index: 1;
+  flex-shrink: 0;
 }
 
 #okibaBox {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
+  flex: 1;
   padding: 0.4rem;
   background-color: rgba(255, 243, 224, 0.2);
   border: 3px double #4a7c7e;
   border-radius: 8px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem;
-  align-content: center;
-  justify-content: center;
-  z-index: 2;
+  flex-direction: column;
+  gap: 0.3rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 2px 6px rgba(0, 0, 0, 0.1);
   min-height: clamp(45px, 7vw, 60px);
 }
 
+.okiba-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  min-height: clamp(20px, 3vw, 30px);
+}
+
 #okibaBox .okane {
-  height: clamp(25px, 3.5vw, 35px);
-  width: auto;
   cursor: grab;
   transition: transform 0.2s ease;
 }
@@ -450,21 +451,27 @@ input[type="number"] {
 }
 
 button {
-  height: 45px;
+  min-height: 50px;
   font-size: clamp(18px, 3vw, 22px);
-  font-weight: 500;
+  font-weight: 700;
   font-family: "UD Digi Kyokasho NK-B", "ヒラギノ角ゴ Pro", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "メイリオ", sans-serif;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  border-radius: 8px;
-  padding: 0.25rem 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 0.5rem 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.15s ease;
 }
 
 button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 #reset {
@@ -487,13 +494,19 @@ button:hover {
 
 #question {
   color: black;
-  background-color: #aed581;
+  background-color: #64b5f6;
   font-weight: 600;
 }
 
 #answer {
   color: black;
   background-color: #4dd0e1;
+  font-weight: 600;
+}
+
+.answer-btn {
+  color: black;
+  background-color: #85f36f;
   font-weight: 600;
 }
 
@@ -536,8 +549,6 @@ table {
 }
 
 #TBL tr td .okane {
-  height: clamp(30px, 4vw, 45px);
-  width: auto;
   margin: 0.1rem;
 }
 
@@ -736,13 +747,6 @@ table {
     min-height: 80px;
   }
 
-  #TBL tr td .okane {
-    height: 25px;
-  }
-
-  .okane-checkbox-area .okane {
-    height: 30px;
-  }
 
   .button-row {
     gap: 0.3rem;
@@ -770,4 +774,102 @@ table {
   .saifu-label {
     font-size: 10px;
   }
+}
+
+/* ========================================
+   コインエリア
+======================================== */
+
+.coin-area {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.coin-container {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 60px;
+  padding: 0.5rem;
+  background-color: rgba(74, 124, 126, 0.3);
+  border-radius: 6px;
+}
+
+.coin-container img {
+  width: clamp(35px, 5vw, 50px);
+  height: auto;
+  animation: coinDrop 0.5s ease-out;
+}
+
+@keyframes coinDrop {
+  0% {
+    transform: translateY(-50px) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.reset-coins-btn {
+  padding: 0.3rem 0.8rem;
+  font-size: clamp(12px, 1.8vw, 14px);
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.reset-coins-btn:hover {
+  background-color: #ff5252;
+}
+
+/* ========================================
+   トースト通知
+======================================== */
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(74, 124, 126, 0.95);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 700;
+  text-align: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  max-width: 90%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.toast-content {
+  line-height: 1.4;
 }
