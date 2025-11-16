@@ -213,52 +213,126 @@
     }
   }
 
-  //　関数　動かすイベント追加
+  // ドラッグ関連変数
+  let currentDragged = null;
+  let offsetX = 0;
+  let offsetY = 0;
+  let canDrag = false;
+
+  /**
+   * ドラッグ&ドロップ機能の設定
+   */
   function ugoki() {
-    //ドラッグ可能アイテムへのタッチイベントの設定
-    var draggableItems = $(".draggable-elem");
-    var kosuu = draggableItems.length;
-    for (var i = 0; i < kosuu; ++i) {
-      var item = draggableItems[i];
-      item.addEventListener('touchstart', touchStartEvent, false);
-      item.addEventListener('touchmove', touchMoveEvent, false);
-      item.addEventListener('touchend', touchEndEvent, false);
+    const draggableItems = document.querySelectorAll(".draggable-elem");
+
+    draggableItems.forEach(item => {
+      // タッチイベント
+      item.addEventListener('touchstart', handleStart, { passive: false });
+      item.addEventListener('touchmove', handleMove, { passive: false });
+      item.addEventListener('touchend', handleEnd, { passive: false });
+
+      // マウスイベント
+      item.addEventListener('mousedown', handleStart, { passive: false });
+    });
+  }
+
+  function handleStart(event) {
+    event.preventDefault();
+    currentDragged = event.target;
+
+    // 財布内（#okibaBox）またはテーブルセル内のお金がドラッグ可能
+    const parentElement = currentDragged.parentElement;
+    canDrag = (parentElement && parentElement.id === 'okibaBox') ||
+              (parentElement && parentElement.tagName === 'TD' && parentElement.classList.contains('droppable-elem'));
+
+    if (!canDrag) {
+      currentDragged = null;
+      return;
     }
 
-    //ドラッグ開始の操作
-    function touchStartEvent(event) {
-      //タッチによる画面スクロールを止める
-      event.preventDefault();
-    }
+    const touch = event.touches ? event.touches[0] : event;
+    const rect = currentDragged.getBoundingClientRect();
 
-    //ドラッグ中の操作
-    function touchMoveEvent(event) {
-      event.preventDefault();
-      //ドラッグ中のアイテムをカーソルの位置に追従
-      var draggedElem = event.target;
-      var touch = event.changedTouches[0];
-      event.target.style.position = "fixed";
-      event.target.style.top = (touch.pageY - window.pageYOffset - draggedElem.offsetHeight / 2) + "px";
-      event.target.style.left = (touch.pageX - window.pageXOffset - draggedElem.offsetWidth / 2) + "px";
-    }
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
 
-    //ドラッグ終了後の操作
-    function touchEndEvent(event) {
-      event.preventDefault();
-      // ドラッグ中の操作のために変更していたスタイルを元に戻す
-      var droppedElem = event.target;
-      droppedElem.style.position = "";
-      event.target.style.top = "";
-      event.target.style.left = "";
-      //ドロップした位置にあるドロップ可能なエレメントに親子付けする
-      var touch = event.changedTouches[0];
-      // スクロール分を加味した座標に存在するエレメントを新しい親とする
-      var newParentElem = document.elementFromPoint(touch.pageX - window.pageXOffset, touch.pageY - window.pageYOffset);
-      if (newParentElem.className == "droppable-elem") {
-        newParentElem.appendChild(droppedElem);
-      }
-      OkaneWrite();
+    currentDragged.style.position = 'fixed';
+    currentDragged.style.zIndex = '1000';
+
+    if (!event.touches) {
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
     }
   }
+
+  function handleMove(event) {
+    if (!currentDragged || !canDrag) return;
+    event.preventDefault();
+
+    const touch = event.touches ? event.touches[0] : event;
+
+    currentDragged.style.left = (touch.clientX - offsetX) + 'px';
+    currentDragged.style.top = (touch.clientY - offsetY) + 'px';
+  }
+
+  function handleEnd(event) {
+    if (!currentDragged || !canDrag) return;
+    event.preventDefault();
+
+    const touch = event.changedTouches ? event.changedTouches[0] : event;
+
+    // ドロップ位置の要素を取得
+    currentDragged.style.display = 'none';
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    currentDragged.style.display = '';
+
+    // スタイルをリセット
+    currentDragged.style.position = '';
+    currentDragged.style.zIndex = '';
+    currentDragged.style.left = '';
+    currentDragged.style.top = '';
+
+    let dropSuccess = false;
+
+    // ドロップ先の判定
+    if (elementBelow) {
+      // 財布エリア（#okibaBox）への移動
+      if (elementBelow.id === 'okibaBox' || elementBelow.closest('#okibaBox')) {
+        const okibaBox = document.getElementById('okibaBox');
+        if (okibaBox) {
+          okibaBox.appendChild(currentDragged);
+          dropSuccess = true;
+        }
+      }
+      // テーブルのセル（お金を並べるエリア）への移動
+      else {
+        const tableCell = elementBelow.tagName === 'TD' ? elementBelow : elementBelow.closest('td');
+
+        if (tableCell && tableCell.classList.contains('droppable-elem')) {
+          tableCell.appendChild(currentDragged);
+          dropSuccess = true;
+        }
+      }
+    }
+
+    // ドロップに失敗した場合は財布に戻す
+    if (!dropSuccess) {
+      const okibaBox = document.getElementById('okibaBox');
+      if (okibaBox) {
+        okibaBox.appendChild(currentDragged);
+      }
+    }
+
+    currentDragged = null;
+    canDrag = false;
+
+    if (!event.touches) {
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+    }
+
+    OkaneWrite();
+  }
+
   OkaneWrite();
 }
