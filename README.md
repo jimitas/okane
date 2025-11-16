@@ -114,28 +114,27 @@
 
 ```
 105_okane/
-├── index.html              # メインHTML（SEO対策、構造化データ）
-├── css/
-│   └── styles.css         # スタイルシート
-├── js/
-│   └── main.js            # メイン処理（ドラッグ&ドロップ、コイン管理）
+├── index.html            # メインHTML（SEO対策、構造化データ）
+├── main.js               # メイン処理（ドラッグ&ドロップ、コイン管理）
+├── styles.css            # スタイルシート
+├── README.md             # プロジェクトドキュメント
 ├── sounds/
-│   ├── set1.mp3          # セット音
-│   ├── seikai.mp3        # 正解音
-│   ├── pi.mp3            # 操作音
-│   └── alart.mp3         # エラー音
+│   ├── set1.mp3         # セット音
+│   ├── seikai.mp3       # 正解音
+│   ├── pi.mp3           # 操作音
+│   └── alart.mp3        # エラー音
 └── img/
-    ├── saifu.png         # 財布画像
-    ├── coin.png          # コイン画像
-    ├── ichiman.png       # 1万円画像
-    ├── gosen.png         # 5千円画像
-    ├── sen.png           # 千円画像
-    ├── gohyaku.png       # 500円画像
-    ├── hyaku.png         # 100円画像
-    ├── gojuu.png         # 50円画像
-    ├── juu.png           # 10円画像
-    ├── go.png            # 5円画像
-    └── ichi.png          # 1円画像
+    ├── saifu.png        # 財布画像
+    ├── coin.png         # コイン画像
+    ├── ichiman.png      # 1万円画像
+    ├── gosen.png        # 5千円画像
+    ├── sen.png          # 千円画像
+    ├── gohyaku.png      # 500円画像
+    ├── hyaku.png        # 100円画像
+    ├── gojuu.png        # 50円画像
+    ├── juu.png          # 10円画像
+    ├── go.png           # 5円画像
+    └── ichi.png         # 1円画像
 ```
 
 ## 🎨 デザインコンセプト
