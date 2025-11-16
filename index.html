@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>おかねのけいさん - 地味に助かる学習コンテンツ jimitask</title>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <header>
+    <section style="display: flex; justify-content: space-between; align-items: center;">
+      <h1>おかねのけいさん</h1>
+      <button id="reset" onclick="window.location.reload();">やりなおし</button>
+    </section>
+  </header>
+
+  <main>
+    <!-- 黒板枠 -->
+    <section class="kokuban">
+      <!-- めあての枠 -->
+      <section class="meate">
+        <span class="box-title">めあて</span>
+        <p>お金を　ならべたり　かぞえたり　しよう。</p>
+      </section>
+
+      <!-- モード選択エリア -->
+      <section class="mode-select-area">
+        <div class="mode-buttons">
+          <h3>モードをえらぶ</h3>
+          <label class="mode-button mode-set active" data-mode="set">
+            <input type="radio" name="mode" value="set" checked>
+            <span class="mode-label">セット</span>
+            <span class="mode-desc">じぶんで金がくを入れて、お金をセット</span>
+          </label>
+          <label class="mode-button mode-narabeyou" data-mode="narabeyou">
+            <input type="radio" name="mode" value="narabeyou">
+            <span class="mode-label">ならべよう</span>
+            <span class="mode-desc">お金をならべるもんだい</span>
+          </label>
+          <label class="mode-button mode-mondai" data-mode="mondai">
+            <input type="radio" name="mode" value="mondai">
+            <span class="mode-label">もんだい</span>
+            <span class="mode-desc">お金の合計を数えるもんだい</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- 財布エリアと各モード専用エリア（横並び） -->
+      <section class="mode-saifu-wrapper">
+        <!-- 財布エリア -->
+        <section class="saifu-area">
+          <div class="saifu-container">
+            <img id="saifu" src="img/saifu.png" alt="財布" class='droppable-elem'>
+            <div id="okibaBox" class='droppable-elem'>
+            </div>
+          </div>
+        </section>
+
+        <!-- 各モード専用エリアのラッパー -->
+        <div class="mode-contents-wrapper">
+          <!-- セットモード専用エリア -->
+          <section class="mode-content" id="modeSet">
+            <div class="input-area">
+              <h4>数字を入力してセット（1～99999）</h4>
+              <div class="button-row">
+                <input id="kazu" type="number" min="1" max="99999" value="">
+                <button id="set">セット</button>
+                <button id="answer">たしかめ</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ならべようモード専用エリア -->
+          <section class="mode-content" id="modeNarabeyou" style="display: none;">
+            <div class="narabeyou-area">
+              <h4>ならべよう。</h4>
+              <div id="box"></div>
+              <div class="button-row" style="margin-top: 0.5rem;">
+                <button id="start">もんだいを　だす</button>
+                <button class="answer-btn">たしかめ</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- もんだいモード専用エリア -->
+          <section class="mode-content" id="modeMondai" style="display: none;">
+            <div class="mondai-area">
+              <h4>お金の合計を数えて、答えを入力しよう。</h4>
+              <div class="button-row">
+                <button id="question">もんだいを　だす</button>
+                <button class="answer-btn">たしかめ</button>
+              </div>
+              <div class="answer-input-area" id="answerInputArea" style="display: none;">
+                <h4>お金の合計は　いくら？</h4>
+                <div>
+                  <input type="number" id="answerInput" min="0" max="99999" value="" placeholder="答えを入力">
+                  <span>円</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- お金を並べるテーブルエリア（独立） -->
+      <section class="table-area">
+        <table>
+          <tbody id="TBL">
+            <tr>
+              <td class='droppable-elem'></td>
+              <td class='droppable-elem'></td>
+              <td class='droppable-elem'></td>
+              <td class='droppable-elem'></td>
+              <td class='droppable-elem'></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 使わない種類の選択 -->
+      <section class="okane-select">
+        <div class="okane-select-wrapper">
+          <h3>つかわないしゅるいの、チェックをはずす</h3>
+          <div class="okane-checkbox-area">
+            <label>
+              <input type="checkbox" id="kurai0" value="10000" checked>
+              <img class="okane" src="img/ichiman.png" alt="1万円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai1" value="5000" checked>
+              <img class="okane" src="img/gosen.png" alt="5千円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai2" value="1000" checked>
+              <img class="okane" src="img/sen.png" alt="千円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai3" value="500" checked>
+              <img class="okane" src="img/gohyaku.png" alt="500円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai4" value="100" checked>
+              <img class="okane" src="img/hyaku.png" alt="100円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai5" value="50" checked>
+              <img class="okane" src="img/gojuu.png" alt="50円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai6" value="10" checked>
+              <img class="okane" src="img/juu.png" alt="10円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai7" value="5" checked>
+              <img class="okane" src="img/go.png" alt="5円">
+            </label>
+            <label>
+              <input type="checkbox" id="kurai8" value="1" checked>
+              <img class="okane" src="img/ichi.png" alt="1円">
+            </label>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://jimitas.com">地味に助かる学習コンテンツ　jimitask</a>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

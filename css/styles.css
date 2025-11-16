@@ -1,0 +1,824 @@
+/* ========================================
+   基本スタイル
+======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 100%;
+  max-height: 100vh;
+  padding: 0.5rem 0 0 0.5rem;
+  line-height: 1.1;
+  font-family: "UD Digi Kyokasho NK-B", "ヒラギノ角ゴ Pro", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "メイリオ", sans-serif;
+  font-size: clamp(18px, 2.5vw, 22px);
+  font-weight: 400;
+  color: white;
+  background-color: #2a4d5a;
+  user-select: none;
+  overflow-x: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* ========================================
+   レイアウト
+======================================== */
+
+header {
+  width: 95%;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+header section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main {
+  width: 95%;
+  margin: 0.25rem;
+  min-height: calc(100vh - 6rem);
+}
+
+footer {
+  width: 95%;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+/* ========================================
+   文字サイズ
+======================================== */
+
+h1 {
+  font-size: clamp(18px, 3vw, 24px);
+  line-height: 1.1;
+  margin-top: 0.25rem;
+}
+
+h2 {
+  margin: 0;
+  padding: 0.5rem 0 0 0;
+  font-size: clamp(18px, 3vw, 24px);
+}
+
+h3 {
+  padding: 0.5rem 0;
+  font-size: clamp(18px, 2.8vw, 22px);
+}
+
+h4 {
+  line-height: 1.1;
+  margin-top: 0.25rem;
+  font-size: clamp(16px, 2.5vw, 20px);
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin: 0.25rem;
+  font-size: clamp(16px, 2.5vw, 20px);
+  line-height: 1.4;
+}
+
+a {
+  color: #ffd54f;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   黒板スタイル
+======================================== */
+
+.kokuban {
+  width: 95%;
+  min-height: 50vh;
+  padding: 1rem;
+  color: #fff;
+  background-color: #1a3a3a;
+  border: 6px solid #8b7355;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+  overflow-y: auto;
+}
+
+.meate {
+  width: 90%;
+  margin: 0.5rem 0.5rem 1rem 0.5rem;
+  position: relative;
+  border: solid 2px #ffb74d;
+  border-radius: 4px;
+  padding: 0.75rem;
+}
+
+.meate .box-title {
+  position: absolute;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  top: -0.75rem;
+  left: 1rem;
+  line-height: 1.1;
+  font-weight: bold;
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: #ffffff;
+  border: solid 2px #ffb74d;
+  background: #ff8f00;
+  border-radius: 6px;
+}
+
+.meate p {
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+  padding-top: 0.5rem;
+}
+
+/* ========================================
+   お金の種類選択エリア
+======================================== */
+
+.okane-select {
+  margin: 1rem 0.5rem;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.okane-select-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.okane-select-wrapper h3 {
+  flex: 2;
+  margin: 0;
+  text-align: left;
+  font-size: clamp(14px, 2.2vw, 18px);
+  line-height: 1.2;
+  padding-right: 0.5rem;
+}
+
+.okane-checkbox-area {
+  flex: 8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.okane-checkbox-area label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.okane-checkbox-area label:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.okane-checkbox-area input[type="checkbox"] {
+  width: clamp(16px, 2vw, 20px);
+  height: clamp(16px, 2vw, 20px);
+  margin-bottom: 0.2rem;
+  cursor: pointer;
+}
+
+.okane-checkbox-area .okane {
+  height: clamp(25px, 3.5vw, 40px);
+  width: auto;
+}
+
+/* ========================================
+   モード選択エリア
+======================================== */
+
+.mode-select-area {
+  margin: 0.5rem 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.mode-buttons h3 {
+  flex: 1;
+  margin: 0;
+  text-align: left;
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.2;
+  padding-right: 0.5rem;
+}
+
+.mode-button {
+  flex: 2;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  opacity: 0.6;
+}
+
+.mode-button input[type="radio"] {
+  display: none;
+}
+
+.mode-button .mode-label {
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.mode-button .mode-desc {
+  font-size: clamp(10px, 1.6vw, 14px);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mode-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.mode-button.active {
+  opacity: 1;
+  border: 2px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transform: scale(1.02);
+}
+
+.mode-set {
+  background-color: #ff8f00;
+  color: white;
+}
+
+.mode-narabeyou {
+  background-color: #ffeb3b;
+  color: black;
+}
+
+.mode-mondai {
+  background-color: #aed581;
+  color: black;
+}
+
+/* ========================================
+   各モード専用エリア
+======================================== */
+
+.mode-content {
+  margin: 1rem 0.5rem;
+}
+
+.mondai-area {
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.mondai-area h4 {
+  margin-bottom: 0.75rem;
+}
+
+.mondai-area button {
+  margin-top: 0.5rem;
+}
+
+.answer-input-area {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: rgba(174, 213, 129, 0.2);
+  border: 2px solid #aed581;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.answer-input-area h4 {
+  margin-bottom: 0.25rem;
+  color: #aed581;
+}
+
+.answer-input-area>div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.answer-input-area input {
+  width: clamp(120px, 15vw, 180px);
+}
+
+.answer-input-area span {
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: bold;
+}
+
+/* ========================================
+   ボタン横並びエリア
+======================================== */
+
+.button-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   入力エリア
+======================================== */
+
+.input-area {
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  text-align: center;
+}
+
+input[type="number"] {
+  width: clamp(100px, 12vw, 150px);
+  height: 45px;
+  font-size: clamp(18px, 3vw, 22px);
+  text-align: center;
+  border: 2px solid #4a7c7e;
+  border-radius: 8px;
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+}
+
+/* ========================================
+   ならべようエリア
+======================================== */
+
+.narabeyou-area {
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  text-align: center;
+}
+
+#box {
+  min-height: 50px;
+  padding: 0.5rem;
+  font-size: clamp(22px, 3.5vw, 28px);
+  text-align: center;
+  background-color: #ffeb3b;
+  color: black;
+  border-radius: 8px;
+  line-height: 50px;
+  font-weight: bold;
+}
+
+/* ========================================
+   財布エリアと各モード専用エリアの横並びラッパー
+======================================== */
+
+.mode-saifu-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.5rem 0.5rem;
+}
+
+.mode-contents-wrapper {
+  flex: 6;
+}
+
+/* ========================================
+   財布エリア
+======================================== */
+
+.saifu-area {
+  flex: 4;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.saifu-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: clamp(50px, 8vw, 70px);
+}
+
+#saifu {
+  width: clamp(84px, 14vw, 126px);
+  height: auto;
+  border-radius: 8px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  position: relative;
+  z-index: 1;
+}
+
+#okibaBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  padding: 0.4rem;
+  background-color: rgba(255, 243, 224, 0.2);
+  border: 3px double #4a7c7e;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  align-content: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-height: clamp(45px, 7vw, 60px);
+}
+
+#okibaBox .okane {
+  height: clamp(25px, 3.5vw, 35px);
+  width: auto;
+  cursor: grab;
+  transition: transform 0.2s ease;
+}
+
+#okibaBox .okane:hover {
+  transform: scale(1.08);
+}
+
+/* ========================================
+   ボタンエリア
+======================================== */
+
+.button-area {
+  margin: 1rem 0.5rem;
+  padding: 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.narabeyou-area h4,
+.mondai-area h4,
+.input-area h4 {
+  margin-bottom: 0.5rem;
+}
+
+button {
+  height: 45px;
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 500;
+  font-family: "UD Digi Kyokasho NK-B", "ヒラギノ角ゴ Pro", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "メイリオ", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  border-radius: 8px;
+  padding: 0.25rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+#reset {
+  color: white;
+  background-color: #d84315;
+  font-weight: 600;
+}
+
+#set {
+  color: white;
+  background-color: #ff8f00;
+  font-weight: 600;
+}
+
+#start {
+  color: black;
+  background-color: #ffeb3b;
+  font-weight: 600;
+}
+
+#question {
+  color: black;
+  background-color: #aed581;
+  font-weight: 600;
+}
+
+#answer {
+  color: black;
+  background-color: #4dd0e1;
+  font-weight: 600;
+}
+
+/* ========================================
+   テーブルエリア（独立100%幅）
+======================================== */
+
+.table-area {
+  width: 100%;
+  margin: 0.5rem 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  min-height: clamp(150px, 20vh, 200px);
+}
+
+/* ========================================
+   テーブル
+======================================== */
+
+table {
+  margin: 0;
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0.5rem;
+  width: 100%;
+}
+
+#TBL tr td {
+  min-width: clamp(80px, 12vw, 120px);
+  height: clamp(120px, 18vw, 160px);
+  border: 3px double #4a7c7e;
+  background-color: #fff3e0;
+  border-radius: 8px;
+  color: #5d4037;
+  text-align: center;
+  vertical-align: top;
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
+#TBL tr td .okane {
+  height: clamp(30px, 4vw, 45px);
+  width: auto;
+  margin: 0.1rem;
+}
+
+/* ========================================
+   ドラッグ可能な要素
+======================================== */
+
+.draggable-elem {
+  cursor: move;
+  touch-action: none;
+}
+
+.droppable-elem {
+  position: relative;
+}
+
+/* ========================================
+   レスポンシブデザイン
+======================================== */
+
+@media (max-width: 768px) {
+  body {
+    padding: 0.25rem;
+    font-size: 18px;
+  }
+
+  header section {
+    flex-direction: column !important;
+    gap: 0.5rem;
+  }
+
+  h1 {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .kokuban {
+    padding: 0.5rem;
+  }
+
+  .meate {
+    width: 95%;
+    margin: 0.5rem auto;
+  }
+
+  .okane-checkbox-area {
+    justify-content: center;
+  }
+
+  /* モードボタンの調整 */
+  .mode-buttons {
+    gap: 0.4rem;
+  }
+
+  .mode-buttons h3 {
+    font-size: 16px;
+    padding-right: 0.3rem;
+  }
+
+  .mode-button {
+    flex: 2;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .mode-button .mode-label {
+    font-size: 16px;
+  }
+
+  .mode-button .mode-desc {
+    font-size: 11px;
+  }
+
+  /* 横並びを縦並びに変更 */
+  .mode-saifu-wrapper {
+    flex-direction: column;
+  }
+
+  .mode-contents-wrapper,
+  .saifu-area {
+    flex: none;
+    width: 100%;
+  }
+
+  .input-area,
+  .narabeyou-area,
+  .button-area {
+    margin: 0.75rem 0.25rem;
+  }
+
+  .saifu-container {
+    max-width: 100%;
+    min-height: clamp(45px, 10vw, 65px);
+  }
+
+  #saifu {
+    width: clamp(70px, 17.5vw, 105px);
+  }
+
+  #okibaBox {
+    width: 80%;
+    padding: 0.35rem;
+    gap: 0.18rem;
+    min-height: clamp(42px, 9vw, 55px);
+  }
+
+  #okibaBox .okane {
+    height: clamp(23px, 4vw, 32px);
+  }
+
+  table {
+    width: 100%;
+    margin: 0.75rem 0;
+  }
+
+  #TBL tr td {
+    min-width: 70px;
+    min-height: 90px;
+  }
+
+  button {
+    height: 40px;
+    font-size: 18px;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .button-row {
+    gap: 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .kokuban {
+    padding: 0.5rem;
+    border-width: 4px;
+  }
+
+  .mode-buttons {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: stretch;
+  }
+
+  .mode-buttons h3 {
+    flex: none;
+    font-size: 14px;
+    text-align: center;
+    padding-right: 0;
+    margin-bottom: 0.3rem;
+  }
+
+  .mode-button {
+    flex: 1;
+    padding: 0.3rem;
+  }
+
+  .mode-button .mode-label {
+    font-size: 14px;
+  }
+
+  .mode-button .mode-desc {
+    font-size: 10px;
+  }
+
+  /* 横並びを縦並びに変更 */
+  .mode-saifu-wrapper {
+    flex-direction: column;
+  }
+
+  .mode-contents-wrapper,
+  .saifu-area {
+    flex: none;
+    width: 100%;
+  }
+
+  input[type="number"] {
+    width: 90px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  button {
+    height: 38px;
+    font-size: 16px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  #TBL tr td {
+    min-width: 60px;
+    min-height: 80px;
+  }
+
+  #TBL tr td .okane {
+    height: 25px;
+  }
+
+  .okane-checkbox-area .okane {
+    height: 30px;
+  }
+
+  .button-row {
+    gap: 0.3rem;
+  }
+
+  .saifu-container {
+    min-height: clamp(40px, 12vw, 60px);
+  }
+
+  #saifu {
+    width: clamp(56px, 21vw, 84px);
+  }
+
+  #okibaBox {
+    width: 80%;
+    padding: 0.3rem;
+    gap: 0.15rem;
+    min-height: clamp(38px, 10vw, 50px);
+  }
+
+  #okibaBox .okane {
+    height: clamp(20px, 4.5vw, 28px);
+  }
+
+  .saifu-label {
+    font-size: 10px;
+  }
+}
