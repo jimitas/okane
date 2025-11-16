@@ -44,6 +44,14 @@
     ugoki();
   });
 
+  const resetSet = document.getElementById('reset-set');
+  resetSet.addEventListener('click', () => {
+    OkaneReset();
+    kazu.value = "";
+    kazu.style.color = "";
+    kazu.style.backgroundColor = "";
+  });
+
   const question = document.getElementById('question');
   const answerInput = document.getElementById('answerInput');
   let correctAnswer = 0; // 正解の金額を保存
@@ -161,40 +169,54 @@
   function OkaneSet() {
     OkaneReset();
     let vol = kazu.value;
+
+    // DocumentFragmentを使用してパフォーマンスを最適化
+    const fragments = [
+      document.createDocumentFragment(),
+      document.createDocumentFragment(),
+      document.createDocumentFragment(),
+      document.createDocumentFragment(),
+      document.createDocumentFragment()
+    ];
+
     for (let i = 0; i < 9; i++) {
       let Check = document.getElementById("kurai" + i);
       if (Check.checked === true) {
         let kosuu = Math.floor(vol / Check.value);
         vol = vol - Check.value * kosuu;
         for (let j = 0; j < kosuu; j++) {
-          var img = document.createElement('img');
+          const img = document.createElement('img');
           img.setAttribute("src", "img/" + okane[i] + ".png");
-          img.classList.add('okane');
-          img.classList.add(okane[i]);
-          img.classList.add('draggable-elem');
+          img.classList.add('okane', okane[i], 'draggable-elem');
+
           switch (i) {
             case 0:
-              TBL.rows[0].cells[0].appendChild(img);
+              fragments[0].appendChild(img);
               break;
             case 1:
             case 2:
-              TBL.rows[0].cells[1].appendChild(img);
+              fragments[1].appendChild(img);
               break;
             case 3:
             case 4:
-              TBL.rows[0].cells[2].appendChild(img);
+              fragments[2].appendChild(img);
               break;
             case 5:
             case 6:
-              TBL.rows[0].cells[3].appendChild(img);
+              fragments[3].appendChild(img);
               break;
             case 7:
             case 8:
-              TBL.rows[0].cells[4].appendChild(img);
+              fragments[4].appendChild(img);
               break;
           }
         }
       }
+    }
+
+    // Fragmentを一括でDOMに追加
+    for (let i = 0; i < 5; i++) {
+      TBL.rows[0].cells[i].appendChild(fragments[i]);
     }
   }
 
@@ -220,25 +242,37 @@
   let canDrag = false;
 
   /**
-   * ドラッグ&ドロップ機能の設定
+   * イベント委譲によるドラッグ&ドロップ機能の設定（初期化時に1回だけ実行）
    */
+  function setupDragAndDrop() {
+    // テーブルエリアにイベントリスナーを追加（イベント委譲）
+    TBL.addEventListener('touchstart', handleStart, { passive: false });
+    TBL.addEventListener('touchmove', handleMove, { passive: false });
+    TBL.addEventListener('touchend', handleEnd, { passive: false });
+    TBL.addEventListener('mousedown', handleStart, { passive: false });
+
+    // 財布エリアにイベントリスナーを追加（イベント委譲）
+    const okibaBox = document.getElementById('okibaBox');
+    okibaBox.addEventListener('touchstart', handleStart, { passive: false });
+    okibaBox.addEventListener('touchmove', handleMove, { passive: false });
+    okibaBox.addEventListener('touchend', handleEnd, { passive: false });
+    okibaBox.addEventListener('mousedown', handleStart, { passive: false });
+  }
+
+  // ugoki関数は後方互換性のため残すが、何もしない
   function ugoki() {
-    const draggableItems = document.querySelectorAll(".draggable-elem");
-
-    draggableItems.forEach(item => {
-      // タッチイベント
-      item.addEventListener('touchstart', handleStart, { passive: false });
-      item.addEventListener('touchmove', handleMove, { passive: false });
-      item.addEventListener('touchend', handleEnd, { passive: false });
-
-      // マウスイベント
-      item.addEventListener('mousedown', handleStart, { passive: false });
-    });
+    // イベント委譲により、この関数は不要
   }
 
   function handleStart(event) {
+    // ドラッグ可能な要素かチェック
+    const target = event.target;
+    if (!target.classList.contains('draggable-elem')) {
+      return;
+    }
+
     event.preventDefault();
-    currentDragged = event.target;
+    currentDragged = target;
 
     // 財布内（#okibaBox）またはテーブルセル内のお金がドラッグ可能
     const parentElement = currentDragged.parentElement;
@@ -334,5 +368,7 @@
     OkaneWrite();
   }
 
+  // 初期化
   OkaneWrite();
+  setupDragAndDrop(); // イベント委譲の設定（1回だけ）
 }
