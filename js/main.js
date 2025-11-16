@@ -30,14 +30,6 @@
 
       // 選択されたモードのコンテンツを表示
       modeContents[mode].style.display = 'block';
-
-      // もんだいモード以外では解答入力エリアを非表示
-      if (mode !== 'mondai') {
-        const answerInputArea = document.getElementById('answerInputArea');
-        if (answerInputArea) {
-          answerInputArea.style.display = 'none';
-        }
-      }
     });
   });
 
@@ -53,7 +45,6 @@
   });
 
   const question = document.getElementById('question');
-  const answerInputArea = document.getElementById('answerInputArea');
   const answerInput = document.getElementById('answerInput');
   let correctAnswer = 0; // 正解の金額を保存
 
@@ -75,8 +66,7 @@
     kazu.value = "";
     box.innerHTML = "";
 
-    // 解答入力エリアを表示
-    answerInputArea.style.display = 'flex';
+    // 解答入力欄をクリア
     answerInput.value = "";
     answerInput.style.backgroundColor = "";
     answerInput.style.color = "";
@@ -120,7 +110,7 @@
 
     // もんだいモードの場合は答え合わせ
     const modeMondai = document.getElementById('modeMondai');
-    if (modeMondai.style.display !== 'none' && answerInputArea.style.display === 'flex') {
+    if (modeMondai.style.display !== 'none') {
       const userAnswer = parseInt(answerInput.value);
       if (isNaN(userAnswer)) {
         alert('答えを入力してください。');

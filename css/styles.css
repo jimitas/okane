@@ -300,53 +300,6 @@ a:hover {
   margin: 1rem 0.5rem;
 }
 
-.mondai-area {
-  padding: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  text-align: center;
-}
-
-.mondai-area h4 {
-  margin-bottom: 0.75rem;
-}
-
-.mondai-area button {
-  margin-top: 0.5rem;
-}
-
-.answer-input-area {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  background-color: rgba(174, 213, 129, 0.2);
-  border: 2px solid #aed581;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.answer-input-area h4 {
-  margin-bottom: 0.25rem;
-  color: #aed581;
-}
-
-.answer-input-area>div {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.answer-input-area input {
-  width: clamp(120px, 15vw, 180px);
-}
-
-.answer-input-area span {
-  font-size: clamp(18px, 3vw, 22px);
-  font-weight: bold;
-}
-
 /* ========================================
    ボタン横並びエリア
 ======================================== */
@@ -382,26 +335,25 @@ input[type="number"] {
 }
 
 /* ========================================
-   ならべようエリア
+   ならべよう金額表示ボックス
 ======================================== */
 
-.narabeyou-area {
-  padding: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  text-align: center;
-}
-
 #box {
-  min-height: 50px;
+  min-width: clamp(100px, 12vw, 150px);
+  min-height: 45px;
+  height: 45px;
   padding: 0.5rem;
   font-size: clamp(22px, 3.5vw, 28px);
   text-align: center;
   background-color: #ffeb3b;
   color: black;
   border-radius: 8px;
-  line-height: 50px;
+  line-height: 1.2;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
 }
 
 /* ========================================
@@ -493,8 +445,6 @@ input[type="number"] {
   gap: 0.75rem;
 }
 
-.narabeyou-area h4,
-.mondai-area h4,
 .input-area h4 {
   margin-bottom: 0.5rem;
 }
@@ -672,7 +622,6 @@ table {
   }
 
   .input-area,
-  .narabeyou-area,
   .button-area {
     margin: 0.75rem 0.25rem;
   }

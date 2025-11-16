@@ -66,39 +66,33 @@
             <div class="input-area">
               <h4>数字を入力してセット（1～99999）</h4>
               <div class="button-row">
-                <input id="kazu" type="number" min="1" max="99999" value="">
+                <input id="kazu" type="number" min="1" max="99999" value="">円
                 <button id="set">セット</button>
-                <button id="answer">たしかめ</button>
+                <button id="answer">いくら？</button>
               </div>
             </div>
           </section>
 
           <!-- ならべようモード専用エリア -->
           <section class="mode-content" id="modeNarabeyou" style="display: none;">
-            <div class="narabeyou-area">
-              <h4>ならべよう。</h4>
-              <div id="box"></div>
-              <div class="button-row" style="margin-top: 0.5rem;">
-                <button id="start">もんだいを　だす</button>
-                <button class="answer-btn">たしかめ</button>
+            <div class="input-area">
+              <h4>お金を　ならべよう</h4>
+              <div class="button-row">
+                <div id="box"></div>円
+                <button id="start">もんだい</button>
+                <button class="answer-btn">こたえあわせ</button>
               </div>
             </div>
           </section>
 
           <!-- もんだいモード専用エリア -->
           <section class="mode-content" id="modeMondai" style="display: none;">
-            <div class="mondai-area">
-              <h4>お金の合計を数えて、答えを入力しよう。</h4>
+            <div class="input-area">
+              <h4>お金のごうけいはいくら？</h4>
               <div class="button-row">
-                <button id="question">もんだいを　だす</button>
-                <button class="answer-btn">たしかめ</button>
-              </div>
-              <div class="answer-input-area" id="answerInputArea" style="display: none;">
-                <h4>お金の合計は　いくら？</h4>
-                <div>
-                  <input type="number" id="answerInput" min="0" max="99999" value="" placeholder="答えを入力">
-                  <span>円</span>
-                </div>
+                <button id="question">もんだい</button>
+                <input type="number" id="answerInput" min="0" max="99999" value="" placeholder="答えを入力">円
+                <button class="answer-btn">こたえあわせ</button>
               </div>
             </div>
           </section>
